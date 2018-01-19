@@ -20,6 +20,10 @@ public abstract class CellPrototype {
      */
     int y;
     /**
+     * Age of the cell
+     */
+    int age;
+    /**
      * Energy level of the cell
      *
      * Helps to determine whether or not the cell should divide
@@ -54,9 +58,13 @@ public abstract class CellPrototype {
         return true;
     }
 
+    public void incrementAge() {
+        this.age++;
+    }
+
     @Override
     public String toString() {
-        return String.format("x=%d, y=%d, energy=%f, mutProb=%f, deathProb=%f\n", this.x, this.y, this.energy, this.mutProb, this.deathProb);
+        return String.format("x=%d, y=%d, age=%d, energy=%f, mutProb=%f, deathProb=%f\n", this.x, this.y, this.age, this.energy, this.mutProb, this.deathProb);
     }
 
     public CellPrototype clone() throws CloneNotSupportedException {
