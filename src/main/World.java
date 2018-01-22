@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
@@ -57,6 +58,21 @@ public class World {
      * Updates the list of cells
      */
 	public void UpdateCells() {
+        ListIterator<CellV1> iter = cells.listIterator();
+        while (iter.hasNext()) {
+            CellV1 cell = iter.next();
+            cell.incrementAge();
+            cell.modifyEnergy();
+            if(cell.doMitosis()) {
+                try {
+                    CellV1 clone = cell.clone();
+                    iter.add(clone);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
         cells.parallelStream().forEach(
                 cellV1 -> {
                     cellV1.incrementAge();
