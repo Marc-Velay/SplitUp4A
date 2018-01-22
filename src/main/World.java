@@ -79,9 +79,12 @@ public class World {
         Random rand = new Random(1337);
         for (int i = 0 ; i < WIDTH ; i++) {
             for (int j=0 ; j < HEIGHT ; j++) {
+            	bricks[i][j] = new Brick(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+            	/*
                 bricks[i][j].setFood(rand.nextFloat());
                 bricks[i][j].setHeat(rand.nextFloat());
                 bricks[i][j].setSalinity(rand.nextFloat());
+                */
             }
         }
     }
