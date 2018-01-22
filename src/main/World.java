@@ -1,7 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
@@ -48,14 +47,14 @@ public class World {
         
         switch (m) {
             case GRADIENT:
-                PopulateBricksGradient();
+                populateBricksGradient();
                 break;
             case SMOOTH_GRADIENT:
-                PopulateBricksSmoothGradient();
+                populateBricksSmoothGradient();
                 break;
             case RANDOM:
             default:
-                PopulateBricksRandom();
+                populateBricksRandom();
                 break;
 
         }
@@ -64,7 +63,7 @@ public class World {
     /**
      * Updates the list of cells
      */
-	public void UpdateCells() {
+	public void updateCells() {
         ListIterator<CellV1> iter = cells.listIterator();
         while (iter.hasNext()) {
             CellV1 cell = iter.next();
@@ -85,7 +84,7 @@ public class World {
     /**
      * Fills the array of Bricks with random values
      */
-	private void PopulateBricksRandom() {
+	private void populateBricksRandom() {
 //        Random rand = new Random(System.nanoTime());
         Random rand = new Random(1337);
         for (int i = 0 ; i < WIDTH ; i++) {
@@ -96,17 +95,17 @@ public class World {
         }
     }
 
-    private void PopulateBricksGradient() {
+    private void populateBricksGradient() {
 	    // TODO: implement the function
-        PopulateBricksRandom();    	
+        populateBricksRandom();
     }
 
-    private void PopulateBricksSmoothGradient() {
+    private void populateBricksSmoothGradient() {
 	    // TODO: implement the function
     	int maxRadius = 7;
     	int angle = 0;
     	
-        PopulateBricksRandom();
+        populateBricksRandom();
     	for(int radius = 0; radius < maxRadius; radius++) {
             Brick[][] modBricks = bricks;
             for(int pole=0; pole < foodPoles.length; pole++) {
