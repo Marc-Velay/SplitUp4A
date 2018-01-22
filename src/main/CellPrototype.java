@@ -39,10 +39,14 @@ public abstract class CellPrototype implements Cloneable {
     double deathProb;
 
     /**
-     * Modifies the energy of the cell according to its current brick
-     * @param brick The brick on which the cell currently exists
+     * Brick on which the cell is positioned
      */
-    public void modifyEnergy(Brick brick) {
+    Brick brick;
+
+    /**
+     * Modifies the energy of the cell according to its current brick
+     */
+    public void modifyEnergy() {
         // TODO: decide how the energy of the cell should be changed
         //brick.setFood(newFoodValue)
         //this.energy = newValue

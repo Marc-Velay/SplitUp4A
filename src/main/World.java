@@ -54,24 +54,13 @@ public class World {
 	}
 
     /**
-     * Update the list of cells
+     * Updates the list of cells
      */
 	public void UpdateCells() {
-        // TODO: check for ConcurrentModificationException
-        /*for (CellV1 c : cells) {
-            c.incrementAge();
-            if (c.doMitosis()) {
-                try {
-                    cells.add(c.clone());
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }*/
         cells.parallelStream().forEach(
                 cellV1 -> {
                     cellV1.incrementAge();
+                    cellV1.modifyEnergy();
                     if(cellV1.doMitosis()) {
                         try {
                             CellV1 clone = cellV1.clone();
