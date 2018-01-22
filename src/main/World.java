@@ -6,13 +6,22 @@ import java.util.Random;
 
 public class World {
 
+    /**
+     * The method used to fill the array of bricks.
+     */
     public enum FillMethod {
         RANDOM,
         GRADIENT,
         SMOOTH_GRADIENT
     }
 
+    /**
+     * Width of the world in bricks
+     */
     public static int WIDTH = 40;
+    /**
+     * Height of the world in bricks
+     */
     public static int HEIGHT = 40;
 
     Brick[][] bricks = new Brick[World.WIDTH][World.HEIGHT];
@@ -22,6 +31,8 @@ public class World {
     /**
      * Initializes the World object with its initial Cell and an array of Bricks.
      *
+     * @param x Horizontal position of the first cell
+     * @param y Vertical position of the first cell
      * @param m The method used to fill the array of bricks
      */
     public World(int x, int y, FillMethod m) {
@@ -42,6 +53,9 @@ public class World {
         }
 	}
 
+    /**
+     * Update the list of cells
+     */
 	public void UpdateCells() {
         // TODO: check for ConcurrentModificationException
         /*for (CellV1 c : cells) {

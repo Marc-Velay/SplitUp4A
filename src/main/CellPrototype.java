@@ -44,7 +44,7 @@ public abstract class CellPrototype implements Cloneable {
      */
     public void modifyEnergy(Brick brick) {
         // TODO: decide how the energy of the cell should be changed
-
+        //brick.setFood(newFoodValue)
         //this.energy = newValue
     }
 
@@ -58,15 +58,19 @@ public abstract class CellPrototype implements Cloneable {
         return true;
     }
 
+    /**
+     * Increments the age of the cell by 1
+     */
     public void incrementAge() {
         this.age++;
     }
 
+    /**
+     * Move newly cloned cell to its position
+     */
     public void birth() {
-        int x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT ;
-        int y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH ;
-        this.x = x;
-        this.y = y;
+        this.x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT;
+        this.y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH;
     }
 
     @Override
