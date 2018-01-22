@@ -9,6 +9,7 @@ public class WorldGUI {
 		frame.setMinimumSize(new Dimension(1000,1000));
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		int i = 40;
 		int j = 40;
 		JPanel[][] panelHolder = new JPanel[i][j];
@@ -21,16 +22,14 @@ public class WorldGUI {
 		      frame.getContentPane().add(panelHolder[m][n]);
 		   }
 		}
-		gdl.setHgap(2); 
-		gdl.setVgap(2);
 		for(int m = 0; m < i; m++) {
 			   for(int n = 0; n < j; n++) {
-			      panelHolder[m][n].add(new JLabel("a"));
+				  int k=(int)(Math.random()*255); 
+			      panelHolder[m][n].setBackground(new Color(255,255-k,255-k));
 			   }
 			}
 		frame.setVisible(true);
 	}
-	
 	public static void main(String[] args) {
 		new WorldGUI();
 	}
