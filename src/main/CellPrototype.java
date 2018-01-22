@@ -1,6 +1,6 @@
 package main;
 
-public abstract class CellPrototype {
+public abstract class CellPrototype implements Cloneable {
 
     /**
      * Width of a cell
@@ -60,6 +60,13 @@ public abstract class CellPrototype {
 
     public void incrementAge() {
         this.age++;
+    }
+
+    public void birth() {
+        int x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT ;
+        int y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH ;
+        this.x = x;
+        this.y = y;
     }
 
     @Override

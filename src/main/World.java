@@ -6,6 +6,12 @@ import java.util.Random;
 
 public class World {
 
+    public enum FillMethod {
+        RANDOM,
+        GRADIENT,
+        SMOOTH_GRADIENT
+    }
+
     public static int WIDTH = 40;
     public static int HEIGHT = 40;
 
@@ -38,7 +44,7 @@ public class World {
 
 	public void UpdateCells() {
         // TODO: check for ConcurrentModificationException
-        for (CellV1 c : cells) {
+        /*for (CellV1 c : cells) {
             c.incrementAge();
             if (c.doMitosis()) {
                 try {
@@ -48,7 +54,21 @@ public class World {
                 }
             }
 
-        }
+        }*/
+        cells.parallelStream().forEach(
+                cellV1 -> {
+                    cellV1.incrementAge();
+                    if(cellV1.doMitosis()) {
+                        try {
+                            CellV1 clone = cellV1.clone();
+                            clone.birth();
+                            cells.add(clone);
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
     }
 
     /**
