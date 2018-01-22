@@ -14,9 +14,12 @@ public class World {
 
     public static int WIDTH = 40;
     public static int HEIGHT = 40;
+    public static int MAXFOODPOLES = 3;
+    public static int GRIDSTEP = 25;
 
     Brick[][] bricks = new Brick[World.WIDTH][World.HEIGHT];
     ArrayList<CellV1> cells = new ArrayList<>();
+    IntPair[] foodPoles = new IntPair[MAXFOODPOLES] ;
 
 
     /**
@@ -27,6 +30,10 @@ public class World {
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
         cells.add(new CellV1(x, y, 1.0, 0.0, 0.0));
+        foodPoles[0] = new IntPair(15,15);
+        foodPoles[1] = new IntPair(25,30);
+        foodPoles[2] = new IntPair(30,10);
+        
         switch (m) {
             case GRADIENT:
                 PopulateBricksGradient();
@@ -79,28 +86,49 @@ public class World {
         Random rand = new Random(1337);
         for (int i = 0 ; i < WIDTH ; i++) {
             for (int j=0 ; j < HEIGHT ; j++) {
-            	bricks[i][j] = new Brick(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-            	/*
-                bricks[i][j].setFood(rand.nextFloat());
-                bricks[i][j].setHeat(rand.nextFloat());
-                bricks[i][j].setSalinity(rand.nextFloat());
-                */
+            	bricks[i][j] = new Brick(rand.nextFloat()*255, rand.nextFloat(), rand.nextFloat());
+            	//bricks[i][j] = new Brick(100, 100, 100);
             }
         }
     }
 
     private void PopulateBricksGradient() {
 	    // TODO: implement the function
-        PopulateBricksRandom();
+        PopulateBricksRandom();    	
     }
 
     private void PopulateBricksSmoothGradient() {
 	    // TODO: implement the function
+    	int maxRadius = 7;
+    	int angle = 0;
+    	
         PopulateBricksRandom();
+    	for(int radius = 0; radius < maxRadius; radius++) {
+            Brick[][] modBricks = bricks;
+            for(int pole=0; pole < foodPoles.length; pole++) {
+            	while(angle < 360) {
+                    int x = (int)(foodPoles[pole].x + (radius) * Math.cos(angle));
+                    int y = (int)(foodPoles[pole].y + (radius) * Math.sin(angle));
+
+                	double newFood = Math.abs(modBricks[x][y].getFood()+ (maxRadius - 2*radius/3));
+                	if(newFood < 0) newFood = 0;
+                	if(newFood > 255) newFood = 255;
+                    System.out.println("x: " + x + " y: " + y + "new food: " + newFood);
+                	this.bricks[x][y].setFood(newFood);
+                	
+                    angle += 1;
+                }
+        		angle = 0;            	
+            }
+    	}
     }
 
     public Brick[][] getBricks() {
         return bricks;
+    }
+
+    public Brick getBrick(int x, int y) {
+        return bricks[x][y];
     }
 
     public ArrayList<CellV1> getCells() {

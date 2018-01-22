@@ -14,7 +14,7 @@ public class WorldGUI {
 		frame.setResizable(false);
 		int width = World.WIDTH;
 		int height = World.HEIGHT;
-		World world=new World(width/2, height/2, FillMethod.RANDOM);
+		World world=new World(width/2, height/2, FillMethod.SMOOTH_GRADIENT);
 		JPanel[][] panelHolder = new JPanel[width][height];
 		GridLayout gdl=new GridLayout(width,height);
 		frame.setLayout(gdl);
@@ -27,8 +27,9 @@ public class WorldGUI {
 		}
 		for(int m = 0; m < width; m++) {
 			   for(int n = 0; n < height; n++) {
-				  int k=(int)(Math.random()*255); 
-			      panelHolder[m][n].setBackground(new Color(255,255-k,255-k));
+				   if (world.getBrick(m, n).getFood() <0) world.getBrick(m, n).setFood(0);
+				   //System.out.println("food " + m + ", " +n +" : " + (int)world.getBrick(m, n).getFood());
+				   panelHolder[m][n].setBackground(new Color(50, (int)world.getBrick(m, n).getFood(), (int)world.getBrick(m, n).getFood()/25));
 			   }
 			}
 		frame.setVisible(true);
