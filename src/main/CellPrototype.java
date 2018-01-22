@@ -1,6 +1,6 @@
 package main;
 
-public abstract class CellPrototype {
+public abstract class CellPrototype implements Cloneable {
 
     /**
      * Width of a cell
@@ -19,6 +19,10 @@ public abstract class CellPrototype {
      * Vertical position of the cell
      */
     int y;
+    /**
+     * Age of the cell
+     */
+    int age;
     /**
      * Energy level of the cell
      *
@@ -54,9 +58,20 @@ public abstract class CellPrototype {
         return true;
     }
 
+    public void incrementAge() {
+        this.age++;
+    }
+
+    public void birth() {
+        int x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT ;
+        int y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH ;
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
     public String toString() {
-        return String.format("x=%d, y=%d, energy=%f, mutProb=%f, deathProb=%f\n", this.x, this.y, this.energy, this.mutProb, this.deathProb);
+        return String.format("x=%d, y=%d, age=%d, energy=%f, mutProb=%f, deathProb=%f\n", this.x, this.y, this.age, this.energy, this.mutProb, this.deathProb);
     }
 
     public CellPrototype clone() throws CloneNotSupportedException {
