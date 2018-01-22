@@ -70,7 +70,7 @@ public class World {
             CellV1 cell = iter.next();
             cell.incrementAge();
             cell.modifyEnergy();
-            if(cell.doMitosis()) {
+            if (cell.doMitosis()) {
                 try {
                     CellV1 clone = cell.clone();
                     iter.add(clone);
@@ -80,21 +80,6 @@ public class World {
             }
 
         }
-        cells.parallelStream().forEach(
-                cellV1 -> {
-                    cellV1.incrementAge();
-                    cellV1.modifyEnergy();
-                    if(cellV1.doMitosis()) {
-                        try {
-                            CellV1 clone = cellV1.clone();
-                            clone.birth();
-                            cells.add(clone);
-                        } catch (CloneNotSupportedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
     }
 
     /**
