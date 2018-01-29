@@ -45,7 +45,7 @@ public class World {
      */
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
-        cells.add(new CellV1(x, y, 1.0, 0.0, 0.0));
+        //cells.add(new CellV1(x, y, 1.0, 0.0, 0.0));
         foodPoles[0] = new IntPair(12,25);
         foodPoles[1] = new IntPair(27,38);
         foodPoles[2] = new IntPair(35,15);
@@ -91,7 +91,6 @@ public class World {
      * Fills the array of Bricks with random values
      */
 	private void populateBricksRandom() {
-//        Random rand = new Random(System.nanoTime());
         Random rand = new Random(1337);
         for (int i = 0 ; i < WIDTH ; i++) {
             for (int j=0 ; j < HEIGHT ; j++) {
