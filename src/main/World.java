@@ -11,24 +11,29 @@ public class World {
      */
     public enum FillMethod {
         RANDOM,
-        GRADIENT,
-        SMOOTH_GRADIENT
+        GRADIENT
     }
 
     /**
      * Width of the world in bricks
      */
-    public static int WIDTH = 40;
+    public static int WIDTH = 50;
     /**
      * Height of the world in bricks
      */
-    public static int HEIGHT = 40;
+    public static int HEIGHT = 50;
+    
     public static int MAXFOODPOLES = 3;
+    public static int MAXHEATPOLES = 1;
+    public static int MAXSALTPOLES = 1;
+    
     public static int GRIDSTEP = 25;
 
     Brick[][] bricks = new Brick[World.WIDTH][World.HEIGHT];
     ArrayList<CellV1> cells = new ArrayList<>();
     IntPair[] foodPoles = new IntPair[MAXFOODPOLES] ;
+    IntPair[] heatPoles = new IntPair[MAXHEATPOLES] ;
+    IntPair[] saltPoles = new IntPair[MAXSALTPOLES] ;
 
 
     /**
@@ -41,16 +46,17 @@ public class World {
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
         cells.add(new CellV1(x, y, 1.0, 0.0, 0.0));
-        foodPoles[0] = new IntPair(15,15);
-        foodPoles[1] = new IntPair(25,30);
-        foodPoles[2] = new IntPair(30,10);
+        foodPoles[0] = new IntPair(12,25);
+        foodPoles[1] = new IntPair(27,38);
+        foodPoles[2] = new IntPair(35,15);
+        
+        heatPoles[0] = new IntPair(15,15);
+        
+        saltPoles[0] = new IntPair(37,37);
         
         switch (m) {
             case GRADIENT:
                 populateBricksGradient();
-                break;
-            case SMOOTH_GRADIENT:
-                populateBricksSmoothGradient();
                 break;
             case RANDOM:
             default:
@@ -89,23 +95,18 @@ public class World {
         Random rand = new Random(1337);
         for (int i = 0 ; i < WIDTH ; i++) {
             for (int j=0 ; j < HEIGHT ; j++) {
-            	bricks[i][j] = new Brick(rand.nextFloat()*255, rand.nextFloat(), rand.nextFloat());
-            	//bricks[i][j] = new Brick(100, 100, 100);
+            	bricks[i][j] = new Brick(rand.nextFloat()*150, rand.nextFloat()*80, rand.nextFloat()*100);
+            	//bricks[i][j] = new Brick(0,0,0);
             }
         }
     }
 
     private void populateBricksGradient() {
-	    // TODO: implement the function
-        populateBricksRandom();
-    }
-
-    private void populateBricksSmoothGradient() {
-	    // TODO: implement the function
-    	int maxRadius = 7;
+    	int maxRadius = 13;
     	int angle = 0;
     	
         populateBricksRandom();
+        //Creates concentric circles with decreasing amounts of food to generate food sources
     	for(int radius = 0; radius < maxRadius; radius++) {
             Brick[][] modBricks = bricks;
             for(int pole=0; pole < foodPoles.length; pole++) {
@@ -113,11 +114,46 @@ public class World {
                     int x = (int)(foodPoles[pole].x + (radius) * Math.cos(angle));
                     int y = (int)(foodPoles[pole].y + (radius) * Math.sin(angle));
 
-                	double newFood = Math.abs(modBricks[x][y].getFood()+ (maxRadius - 2*radius/3));
-                	if(newFood < 0) newFood = 0;
-                	if(newFood > 255) newFood = 255;
-                    System.out.println("x: " + x + " y: " + y + "new food: " + newFood);
+                	double newFood = Math.abs(modBricks[x][y].getFood()+ (maxRadius - radius)*(1.2));
                 	this.bricks[x][y].setFood(newFood);
+                	this.bricks[x][y].computeFitness();
+                	
+                    angle += 1;
+                }
+        		angle = 0;            	
+            }
+    	}
+
+        //Creates concentric circles with decreasing amounts of heat to generate heat sources
+    	for(int radius = 0; radius < maxRadius; radius++) {
+            Brick[][] modBricks = bricks;
+            for(int pole=0; pole < heatPoles.length; pole++) {
+            	while(angle < 360) {
+            		
+                    int x = (int)(heatPoles[pole].x + (radius) * Math.cos(angle));
+                    int y = (int)(heatPoles[pole].y + (radius) * Math.sin(angle));
+
+                	double newHeat = Math.abs(modBricks[x][y].getHeat()+ (maxRadius - radius)*(1.2));
+                	this.bricks[x][y].setHeat(newHeat);
+                	this.bricks[x][y].computeFitness();
+                	
+                    angle += 1;
+                }
+        		angle = 0;            	
+            }
+    	}
+        //Creates concentric circles with decreasing amounts of salt to generate salt sources
+    	for(int radius = 0; radius < maxRadius; radius++) {
+            Brick[][] modBricks = bricks;
+            for(int pole=0; pole < saltPoles.length; pole++) {
+            	while(angle < 360) {
+            		
+                    int x = (int)(saltPoles[pole].x + (radius) * Math.cos(angle));
+                    int y = (int)(saltPoles[pole].y + (radius) * Math.sin(angle));
+
+                	double newSalinity = Math.abs(modBricks[x][y].getSalinity()+ (maxRadius - radius)*(1.2));
+                	this.bricks[x][y].setSalinity(newSalinity);
+                	this.bricks[x][y].computeFitness();
                 	
                     angle += 1;
                 }
@@ -125,6 +161,7 @@ public class World {
             }
     	}
     }
+
 
     public Brick[][] getBricks() {
         return bricks;

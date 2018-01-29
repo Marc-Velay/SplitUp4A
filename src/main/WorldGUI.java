@@ -19,7 +19,7 @@ public class WorldGUI{
 		int width = World.WIDTH;
 		int height = World.HEIGHT;
 		
-		World world=new World(width/2, height/2, FillMethod.SMOOTH_GRADIENT);
+		World world=new World(width/2, height/2, FillMethod.GRADIENT);
 		
 		JPanel[][] panelHolder = new JPanel[width][height];
 		
@@ -37,9 +37,12 @@ public class WorldGUI{
 
 		for(int m = 0; m < width; m++) {
 		   for(int n = 0; n < height; n++) {
-			   if (world.getBrick(m, n).getFood() <0) world.getBrick(m, n).setFood(0);
-			   //System.out.println("food " + m + ", " +n +" : " + (int)world.getBrick(m, n).getFood());
-			   panelHolder[m][n].setBackground(new Color(50, (int)world.getBrick(m, n).getFood(), (int)world.getBrick(m, n).getFood()/25));
+			   //System.out.println("fitness " + m + ", " +n +" : " + (int)world.getBrick(m, n).getFitness());
+			   if (world.getBrick(m, n).getFitness() <= 50)  {panelHolder[m][n].setBackground(new Color(75-(int)(world.getBrick(m, n).getFitness()*1), 0, 0));}
+			   else {
+				   panelHolder[m][n].setBackground(new Color(0, (int)(world.getBrick(m, n).getFitness()*1), 0));
+			   }
+			   
 		   }
 		}
 		
