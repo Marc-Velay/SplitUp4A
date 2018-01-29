@@ -39,14 +39,9 @@ public abstract class CellPrototype implements Cloneable {
     double deathProb;
 
     /**
-     * Brick on which the cell is positioned
-     */
-    Brick brick;
-
-    /**
      * Modifies the energy of the cell according to its current brick
      */
-    public void modifyEnergy() {
+    public void feed(Brick brick) {
         // TODO: decide how the energy of the cell should be changed
         //brick.setFood(newFoodValue)
         //this.energy = newValue
@@ -70,12 +65,14 @@ public abstract class CellPrototype implements Cloneable {
     }
 
     /**
-     * Move newly cloned cell to its position
+     * Sets the newly cloned cell's parameters
      */
     public void birth() {
         this.x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT;
         this.y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH;
+        // this.age = 0;
     }
+
 
     @Override
     public String toString() {
@@ -84,5 +81,13 @@ public abstract class CellPrototype implements Cloneable {
 
     public CellPrototype clone() throws CloneNotSupportedException {
         return (CellPrototype) super.clone();
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
     }
 }
