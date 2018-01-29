@@ -21,4 +21,5 @@ public class CellV1 extends CellPrototype {
         this.energy /= 2;
         return (CellV1) super.clone();
     }
+    
 }

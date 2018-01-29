@@ -15,11 +15,11 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     /**
      * Horizontal position of the cell
      */
-    int x;
+    int x=0;
     /**
      * Vertical position of the cell
      */
-    int y;
+    int y=0;
     /**
      * Age of the cell
      */
@@ -44,15 +44,23 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
      */
     Brick brick;
 
+    public int getPosX() {
+        return this.x;
+    }
+
+    public int getPosY() {
+        return this.y;
+    }
+    
     /**
      * Modifies the energy of the cell according to its current brick
      */
-    public void modifyEnergy() {
+    public void feed(Brick brick) {
         // TODO: decide how the energy of the cell should be changed
         //brick.setFood(newFoodValue)
         //this.energy = newValue
     }
-
+	
     /**
      * Returns whether or not the cell will divide
      *
@@ -93,5 +101,5 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
 
     public CellPrototype clone() throws CloneNotSupportedException {
         return (CellPrototype) super.clone();
-    }
+    }    
 }

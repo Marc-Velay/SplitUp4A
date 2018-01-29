@@ -71,13 +71,17 @@ public class World {
      */
 	public void updateCells() {
         ListIterator<CellV1> iter = cells.listIterator();
+        int brickX, brickY;
         while (iter.hasNext()) {
             CellV1 cell = iter.next();
+            brickX = cell.getPosX() / GRIDSTEP;
+            brickY = cell.getPosY() / GRIDSTEP;
             cell.incrementAge();
-            cell.modifyEnergy();
+            cell.feed(bricks[brickX][brickY]);
             if (cell.doMitosis()) {
                 try {
                     CellV1 clone = cell.clone();
+                    clone.birth();
                     iter.add(clone);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
