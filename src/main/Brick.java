@@ -13,7 +13,7 @@ public class Brick {
         this.heat = heat;
         this.salinity = salinity;
         this.computeFitness();
-        this.regenRate = this.fitness/4;
+        this.regenRate = this.fitness/6;
     }
 
     public double getFood() {

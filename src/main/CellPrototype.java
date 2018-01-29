@@ -23,7 +23,7 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     /**
      * Age of the cell
      */
-    int age;
+    int age=0;
     /**
      * Energy level of the cell
      *
@@ -84,6 +84,10 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     public void birth() {
         this.x = this.age % 2 == 0 ? this.x - CellPrototype.RADIUS : this.x + CellPrototype.RADIUS;
         this.y = this.age % 2 == 0 ? this.y - CellPrototype.RADIUS : this.y + CellPrototype.RADIUS;
+        if(this.x-CellPrototype.RADIUS < 0) this.x = CellPrototype.RADIUS/2;
+        if(this.y-CellPrototype.RADIUS < 0) this.y = CellPrototype.RADIUS/2;
+        if(this.x+CellPrototype.RADIUS > WorldGUI.WINDOWWIDTH) this.x = WorldGUI.WINDOWWIDTH - CellPrototype.RADIUS/2;
+        if(this.y+CellPrototype.RADIUS > WorldGUI.WINDOWWIDTH) this.y = WorldGUI.WINDOWWIDTH - CellPrototype.RADIUS/2;
     }
     
     public void paintComponent(Graphics g){

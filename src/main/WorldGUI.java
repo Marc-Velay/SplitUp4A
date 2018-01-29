@@ -45,7 +45,7 @@ public class WorldGUI{
 		   }
 		}
 
-		for(int m = 0; m < width; m++) {
+		/*for(int m = 0; m < width; m++) {
 		   for(int n = 0; n < height; n++) {
 			   //System.out.println("fitness " + m + ", " +n +" : " + (int)world.getBrick(m, n).getFitness());
 			   if (world.getBrick(m, n).getFitness() <= 50)  {panelHolder[m][n].setBackground(new Color(75-(int)(world.getBrick(m, n).getFitness()*1), 0, 0));}
@@ -54,13 +54,43 @@ public class WorldGUI{
 			   }
 			   
 		   }
-		}
+		}*/
 		
-		cellPanel.add(new CellV1(WINDOWWIDTH/2, WINDOWHEIGHT/2, 1.0, 0.0, 0.0));
+		
+		/*for(int cell = 0; cell < world.cells.size(); cell++) {
+			cellPanel.add(world.cells.get(cell));
+		}*/
 		cellPanel.setVisible(true);
 		
 		frame.setLayout(gdl);
 		frame.setVisible(true);
+		
+		for(int time =0; time < 200; time++) {
+			try {
+				cellPanel.removeAll();
+				world.updateCells();
+				world.updateBricks();
+				for(int m = 0; m < width; m++) {
+					for(int n = 0; n < height; n++) {
+						//System.out.println("fitness " + m + ", " +n +" : " + (int)world.getBrick(m, n).getFitness());
+						if (world.getBrick(m, n).getFitness() <= 50)  {panelHolder[m][n].setBackground(new Color(75-(int)(world.getBrick(m, n).getFitness()*1), 0, 0));}
+						else {
+							panelHolder[m][n].setBackground(new Color(0, (int)(world.getBrick(m, n).getFitness()*1), 0));
+						}	   
+					}
+				}
+				for(int cell = 0; cell < world.cells.size(); cell++) {
+					cellPanel.add(world.cells.get(cell));
+				}
+				cellPanel.setVisible(true);
+				frame.repaint();
+				System.out.println(time);
+				Thread.sleep(900);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	public static void main(String[] args) {
 		new WorldGUI();

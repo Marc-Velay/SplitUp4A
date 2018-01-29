@@ -27,7 +27,7 @@ public class World {
     public static int MAXHEATPOLES = 1;
     public static int MAXSALTPOLES = 1;
     
-    public static int GRIDSTEP = 25;
+    public static int GRIDSTEP = WorldGUI.WINDOWWIDTH/WIDTH;
 
     Brick[][] bricks = new Brick[World.WIDTH][World.HEIGHT];
     ArrayList<CellV1> cells = new ArrayList<>();
@@ -45,7 +45,7 @@ public class World {
      */
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
-        cells.add(new CellV1(x, y, 1.0, 0.0, 0.0));
+        cells.add(new CellV1(WorldGUI.WINDOWWIDTH/2, WorldGUI.WINDOWHEIGHT/2, 1.0, 0.0, 0.0));
         foodPoles[0] = new IntPair(12,25);
         foodPoles[1] = new IntPair(27,38);
         foodPoles[2] = new IntPair(35,15);
@@ -74,12 +74,15 @@ public class World {
         int brickX, brickY;
         while (iter.hasNext()) {
             CellV1 cell = iter.next();
-            
-            brickX = cell.getPosX() / GRIDSTEP;
+            cell.x +=20;
+            System.out.println(cell.x);
+            cell.repaint();
+            /*brickX = cell.getPosX() / GRIDSTEP;
             brickY = cell.getPosY() / GRIDSTEP;
             
             cell.incrementAge();
             cell.feed(bricks[brickX][brickY]);
+            cell.x += 20;
             if (cell.doMitosis()) {
                 try {
                     CellV1 clone = cell.clone();
@@ -88,11 +91,22 @@ public class World {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
         }
     }
-
+	
+	/*
+	 * Updates the bricks' food and fitness
+	 */
+	public void updateBricks() {
+		for(int i =0; i < WIDTH; i++) {
+			for(int j = 0; j < HEIGHT; j++) {
+				this.getBrick(i, j).regenFood();
+				this.getBrick(i, j).computeFitness();
+			}
+		}
+	}
     /**
      * Fills the array of Bricks with random values
      */
