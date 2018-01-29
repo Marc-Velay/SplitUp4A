@@ -60,6 +60,6 @@ public class Brick {
     }
     
     public void regenFood() {
-    	this.food += regenRate;
+    	this.setFood(this.getFood()+ regenRate);
     }
 }

@@ -2,6 +2,8 @@ package main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -33,16 +35,12 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     /**
      * Probability of the cell mutating
      */
-    double mutProb;
+    double mutProb=0.1;
     /**
      * Probability of the cell dying
      */
     double deathProb;
 
-    /**
-     * Brick on which the cell is positioned
-     */
-    Brick brick;
 
     public int getPosX() {
         return this.x;
@@ -57,8 +55,8 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
      */
     public void feed(Brick brick) {
         // TODO: decide how the energy of the cell should be changed
-        //brick.setFood(newFoodValue)
-        //this.energy = newValue
+        brick.setFood(brick.getFood()-255/4);
+        this.energy += brick.getFood()/255;
     }
 	
     /**
@@ -67,8 +65,9 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
      * @return Boolean indicating if the cell should divide
      */
     public boolean doMitosis() {
-        // TODO: implement mitosis logic
-        return true;
+    	Random rand = new Random();
+    	if(rand.nextFloat()<(this.mutProb*this.energy)) { return true; }
+    	return false;
     }
 
     /**
@@ -79,11 +78,28 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     }
 
     /**
+     * Sets the energy of the cell
+     */
+    public void setEnergy(double energy) {
+    	if(energy < 0) energy = 0;
+    	if(energy > 1) energy = 1;
+        this.energy = energy;
+    }
+
+    /**
      * Sets the newly cloned cell's parameters
      */
-    public void birth() {
-        this.x = this.age % 2 == 0 ? this.x - CellPrototype.RADIUS : this.x + CellPrototype.RADIUS;
-        this.y = this.age % 2 == 0 ? this.y - CellPrototype.RADIUS : this.y + CellPrototype.RADIUS;
+    public void birth(ArrayList<CellV1> cells) {
+        //this.x = this.age % 2 == 0 ? this.x - CellPrototype.RADIUS : this.y + CellPrototype.RADIUS;
+        //this.y = this.age % 2 == 0 ? this.y - CellPrototype.RADIUS : this.x + CellPrototype.RADIUS;
+    	
+    	if(this.age %2 == 0) {
+    		this.x += CellPrototype.RADIUS +2;
+    	} else {
+    		this.y += CellPrototype.RADIUS +2;
+    		
+    	}
+    	
         if(this.x-CellPrototype.RADIUS < 0) this.x = CellPrototype.RADIUS/2;
         if(this.y-CellPrototype.RADIUS < 0) this.y = CellPrototype.RADIUS/2;
         if(this.x+CellPrototype.RADIUS > WorldGUI.WINDOWWIDTH) this.x = WorldGUI.WINDOWWIDTH - CellPrototype.RADIUS/2;
@@ -92,8 +108,9 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     
     public void paintComponent(Graphics g){
     	this.setOpaque(true);
-		int k=(int)(128+Math.random()*(255-128)); 
-	    g.setColor(new Color(255-k,255-k,255));
+		//int k=(int)(128+Math.random()*(255-128)); 
+    	this.setEnergy(this.energy);
+	    g.setColor(new Color(255, (int)(this.energy*254),(int)(this.energy*254)));
 	    g.fillOval(this.x, this.y, CellPrototype.RADIUS, CellPrototype.RADIUS);    
     }  
 

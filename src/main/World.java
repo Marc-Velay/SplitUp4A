@@ -45,7 +45,8 @@ public class World {
      */
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
-        cells.add(new CellV1(WorldGUI.WINDOWWIDTH/2, WorldGUI.WINDOWHEIGHT/2, 1.0, 0.0, 0.0));
+        cells.add(new CellV1(WorldGUI.WINDOWWIDTH/2, WorldGUI.WINDOWHEIGHT/2, 1.0, 0.3, 0.0));
+        
         foodPoles[0] = new IntPair(12,25);
         foodPoles[1] = new IntPair(27,38);
         foodPoles[2] = new IntPair(35,15);
@@ -80,12 +81,17 @@ public class World {
             
             cell.incrementAge();
             cell.feed(bricks[brickX][brickY]);
-            cell.x += 20;
+            //cell.x += 20;
             if (cell.doMitosis()) {
                 try {
                     CellV1 clone = cell.clone();
-                    clone.birth();
+                    clone.birth(cells);
                     iter.add(clone);
+                    if(cell.energy < 0.2) {
+                    	cells.remove(cell);
+                    	System.out.println("cell died");
+                    	return;
+                    }
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
