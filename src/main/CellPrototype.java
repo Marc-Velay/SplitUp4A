@@ -1,15 +1,16 @@
 package main;
 
-public abstract class CellPrototype implements Cloneable {
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public abstract class CellPrototype extends JPanel implements Cloneable {
 
     /**
-     * Width of a cell
+     * Radius of a cell
      */
-    public static int WIDTH=10;
-    /**
-     * Height of a cell
-     */
-    public static int HEIGHT=10;
+    public static int RADIUS=25;
 
     /**
      * Horizontal position of the cell
@@ -81,9 +82,16 @@ public abstract class CellPrototype implements Cloneable {
      * Sets the newly cloned cell's parameters
      */
     public void birth() {
-        this.x = this.age % 2 == 0 ? this.x - CellPrototype.HEIGHT : this.x + CellPrototype.HEIGHT;
-        this.y = this.age % 2 == 0 ? this.y - CellPrototype.WIDTH : this.y + CellPrototype.WIDTH;
+        this.x = this.age % 2 == 0 ? this.x - CellPrototype.RADIUS : this.x + CellPrototype.RADIUS;
+        this.y = this.age % 2 == 0 ? this.y - CellPrototype.RADIUS : this.y + CellPrototype.RADIUS;
     }
+    
+    public void paintComponent(Graphics g){
+    	this.setOpaque(true);
+		int k=(int)(128+Math.random()*(255-128)); 
+	    g.setColor(new Color(255-k,255-k,255));
+	    g.fillOval(this.x, this.y, CellPrototype.RADIUS, CellPrototype.RADIUS);    
+    }  
 
     @Override
     public String toString() {

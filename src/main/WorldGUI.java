@@ -6,16 +6,26 @@ import main.World.FillMethod;
 import java.awt.*;
 
 public class WorldGUI{
+	
+	public static int WINDOWWIDTH = 1000;
+	public static int WINDOWHEIGHT = 1000; 
+	
 	public WorldGUI(){
 		
 		//World world=new World();
 		
 		JFrame frame=new JFrame("Let's split up alpha 0.0");
-		frame.setMinimumSize(new Dimension(1000,1000));
+		frame.setMinimumSize(new Dimension(WINDOWWIDTH,WINDOWHEIGHT));
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 
+
+		final JPanel cellPanel = (JPanel) frame.getGlassPane();
+		cellPanel.setPreferredSize(new Dimension(WINDOWWIDTH,WINDOWHEIGHT));
+		cellPanel.setLayout(new BorderLayout());
+		
+		
 		int width = World.WIDTH;
 		int height = World.HEIGHT;
 		
@@ -46,11 +56,8 @@ public class WorldGUI{
 		   }
 		}
 		
-		final JPanel cell = (JPanel) frame.getGlassPane();
-		cell.setPreferredSize(new Dimension(1000,1000));
-		cell.setLayout(new BorderLayout());
-		cell.add(new CellGUI());
-		cell.setVisible(true);
+		cellPanel.add(new CellV1(WINDOWWIDTH/2, WINDOWHEIGHT/2, 1.0, 0.0, 0.0));
+		cellPanel.setVisible(true);
 		
 		frame.setLayout(gdl);
 		frame.setVisible(true);
