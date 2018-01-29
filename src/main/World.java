@@ -74,10 +74,8 @@ public class World {
         int brickX, brickY;
         while (iter.hasNext()) {
             CellV1 cell = iter.next();
-            cell.x +=20;
-            System.out.println(cell.x);
-            cell.repaint();
-            /*brickX = cell.getPosX() / GRIDSTEP;
+
+            brickX = cell.getPosX() / GRIDSTEP;
             brickY = cell.getPosY() / GRIDSTEP;
             
             cell.incrementAge();
@@ -91,8 +89,8 @@ public class World {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
-            }*/
-
+            }
+            cell.repaint();
         }
     }
 	
