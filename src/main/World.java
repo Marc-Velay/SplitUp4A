@@ -45,7 +45,10 @@ public class World {
      */
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
-        cells.add(new CellV1(38*GRIDSTEP, 27*GRIDSTEP, 1.0, 0.3, 0.0));
+    	Random rand = new Random();
+    	int createX = 10+rand.nextInt(35);
+    	int createY = 10+rand.nextInt(17);
+        cells.add(new CellV1(createX*GRIDSTEP, createY*GRIDSTEP, 1.0, 0.4, 0.0));
         
         foodPoles[0] = new IntPair(12,25);
         foodPoles[1] = new IntPair(27,38);
@@ -92,7 +95,7 @@ public class World {
                 		cells.remove(clone);
                 	}
                     
-                    if(cell.energy < 0.2) {
+                    if(cell.energy < 0.1) {
                     	cells.remove(cell);
                     	return;
                     }
