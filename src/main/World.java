@@ -45,7 +45,7 @@ public class World {
      */
     public World(int x, int y, FillMethod m) {
         // TODO: determine initial values for the cell
-        cells.add(new CellV1(WorldGUI.WINDOWWIDTH/2, WorldGUI.WINDOWHEIGHT/2, 1.0, 0.3, 0.0));
+        cells.add(new CellV1(38*GRIDSTEP, 27*GRIDSTEP, 1.0, 0.3, 0.0));
         
         foodPoles[0] = new IntPair(12,25);
         foodPoles[1] = new IntPair(27,38);
@@ -76,8 +76,8 @@ public class World {
         while (iter.hasNext()) {
             CellV1 cell = iter.next();
 
-            brickX = cell.getPosX() / GRIDSTEP;
-            brickY = cell.getPosY() / GRIDSTEP;
+            brickX = (int)(cell.getPosY() / GRIDSTEP);
+            brickY = (int)(cell.getPosX() / GRIDSTEP);
             
             cell.incrementAge();
             cell.feed(bricks[brickX][brickY]);
@@ -85,11 +85,15 @@ public class World {
             if (cell.doMitosis()) {
                 try {
                     CellV1 clone = cell.clone();
-                    clone.birth(cells);
-                    iter.add(clone);
+                    Boolean birthed = clone.birth(cells);
+                    if(birthed == true) {
+                    	iter.add(clone);
+                	} else {
+                		cells.remove(clone);
+                	}
+                    
                     if(cell.energy < 0.2) {
                     	cells.remove(cell);
-                    	System.out.println("cell died");
                     	return;
                     }
                 } catch (CloneNotSupportedException e) {

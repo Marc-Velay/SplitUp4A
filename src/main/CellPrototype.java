@@ -3,6 +3,7 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -56,7 +57,11 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     public void feed(Brick brick) {
         // TODO: decide how the energy of the cell should be changed
         brick.setFood(brick.getFood()-255/4);
-        this.energy += brick.getFood()/255;
+        if(brick.getFitness() > 50) {
+        	this.energy += brick.getFitness()/255;
+        } else {
+        	this.energy -= brick.getFitness()/250;
+    	} 
     }
 	
     /**
@@ -85,25 +90,66 @@ public abstract class CellPrototype extends JPanel implements Cloneable {
     	if(energy > 1) energy = 1;
         this.energy = energy;
     }
+    /*
+     * Checks that the spot where we try to create a cell is clear
+     */
+    private Boolean[] dirIsClear(ArrayList<CellV1> cells) {
+    	Boolean[] clearDir = new Boolean[4];
+    	Arrays.fill(clearDir, true);
+    	for(int cellNum = 0; cellNum < cells.size(); cellNum++) {
+    		CellV1 cell = cells.get(cellNum);
+    		if(this.x < cell.x && cell.x <= this.x + CellPrototype.RADIUS+5 && this.y==cell.y) {
+        		clearDir[0] = false;
+        	} 
+    		if(this.y < cell.y && cell.y <= this.y + CellPrototype.RADIUS+5 && this.x==cell.x) {
+        		clearDir[1] = false;
+        	} 
+    		if(this.x > cell.x && cell.x >= this.x - CellPrototype.RADIUS-5 && this.y==cell.y) {
+        		clearDir[2] = false;
+        	} 
+    		if(this.y > cell.y && cell.y >= this.y - CellPrototype.RADIUS-5 && this.x==cell.x) {
+        		clearDir[3] = false;
+        	} 
+    	}
+    	
 
+    	//System.out.println(clearDir[0] + " " + clearDir[1] + " " + clearDir[2] + " " + clearDir[3]);
+    	
+    	return clearDir;
+    }
+    
     /**
      * Sets the newly cloned cell's parameters
      */
-    public void birth(ArrayList<CellV1> cells) {
-        //this.x = this.age % 2 == 0 ? this.x - CellPrototype.RADIUS : this.y + CellPrototype.RADIUS;
-        //this.y = this.age % 2 == 0 ? this.y - CellPrototype.RADIUS : this.x + CellPrototype.RADIUS;
+    public Boolean birth(ArrayList<CellV1> cells) {
+
+    	Boolean birthed = false;
+    	Boolean[] clearDirs = dirIsClear(cells);
     	
-    	if(this.age %2 == 0) {
-    		this.x += CellPrototype.RADIUS +2;
-    	} else {
-    		this.y += CellPrototype.RADIUS +2;
-    		
+    	if(clearDirs[0] == true || clearDirs[2] == true) {
+        	if(clearDirs[0] == true) {
+        		this.x += CellPrototype.RADIUS;
+        		birthed = true;
+        	} else {
+        		this.x -= CellPrototype.RADIUS;
+        		birthed = true;
+        	}
+    	} else if(clearDirs[1] == true || clearDirs[3] == true) {
+        	if(clearDirs[1] == true) {
+        		this.y += CellPrototype.RADIUS;
+        		birthed = true;
+        	} else {
+        		this.y -= CellPrototype.RADIUS;
+        		birthed = true;
+        	} 
     	}
+    	
     	
         if(this.x-CellPrototype.RADIUS < 0) this.x = CellPrototype.RADIUS/2;
         if(this.y-CellPrototype.RADIUS < 0) this.y = CellPrototype.RADIUS/2;
         if(this.x+CellPrototype.RADIUS > WorldGUI.WINDOWWIDTH) this.x = WorldGUI.WINDOWWIDTH - CellPrototype.RADIUS/2;
         if(this.y+CellPrototype.RADIUS > WorldGUI.WINDOWWIDTH) this.y = WorldGUI.WINDOWWIDTH - CellPrototype.RADIUS/2;
+        return birthed;
     }
     
     public void paintComponent(Graphics g){
